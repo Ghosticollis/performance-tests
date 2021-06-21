@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,8 +10,8 @@ using System.Text;
 namespace SomeNamespace {
     public class MTestPerformance {
 
-        static int runs = 10;
-        static ulong input_length = 1000000;
+        static int runs = 3;
+        static ulong input_length = 10000000;
         static string input;
 
         delegate byte[] FunctionPtr(String input);
@@ -38,6 +38,8 @@ namespace SomeNamespace {
             results.Add(("V5_1", TestPerformance(HexStringToByteArrayV5_1)));
             Console.WriteLine("Testing Performance of V5_2");
             results.Add(("V5_2", TestPerformance(HexStringToByteArrayV5_2)));
+            Console.WriteLine("Testing Performance of V5_3");
+            results.Add(("V5_3", TestPerformance(HexStringToByteArrayV5_3)));
             Console.WriteLine("Testing Performance of V6");
             results.Add(("V6", TestPerformance(HexStringToByteArrayV6)));
             Console.WriteLine("Testing Performance of V7");
@@ -123,6 +125,7 @@ namespace SomeNamespace {
             TestCorrectness(HexStringToByteArrayV4, hexStr);
             TestCorrectness(HexStringToByteArrayV5_1, hexStr);
             TestCorrectness(HexStringToByteArrayV5_2, hexStr);
+            TestCorrectness(HexStringToByteArrayV5_3, hexStr);
             TestCorrectness(HexStringToByteArrayV6, hexStr);
             TestCorrectness(HexStringToByteArrayV7, hexStr);
             TestCorrectness(HexStringToByteArrayV8, hexStr);
@@ -336,10 +339,10 @@ namespace SomeNamespace {
             int hexStringLength = hexString.Length;
             byte[] b = new byte[hexStringLength / 2];
             for (int i = 0; i < hexStringLength; i += 2) {
-                int topChar = hexString[i] & ~0x20;
-                topChar = (topChar > 0x40 ? topChar - 0x37 : topChar - 0x30) << 4;
-                int bottomChar = hexString[i+1] & ~0x20;
-                bottomChar = bottomChar > 0x40 ? bottomChar - 0x37 : bottomChar - 0x30;
+                int topChar = hexString[i];// & ~0x20;
+                topChar = (topChar > 0x40 ? (topChar & ~0x20) - 0x37 : topChar - 0x30) << 4;
+                int bottomChar = hexString[i + 1];// & ~0x20;
+                bottomChar = bottomChar > 0x40 ? (bottomChar & ~0x20) - 0x37 : bottomChar - 0x30;
                 //b[i / 2] = Convert.ToByte(topChar + bottomChar);
                 // Convert.ToByte(topChar + bottomChar) can be written as (byte)(topChar + bottomChar) – Amir Rezaei
                 b[i / 2] = (byte)(topChar + bottomChar);
