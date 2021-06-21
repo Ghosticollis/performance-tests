@@ -7,11 +7,11 @@ using System.Numerics;
 using System.Text;
 
 
-namespace InvesBanEvades {
+namespace SomeNamespace {
     public class MTestPerformance {
 
-        static int runs = 100;
-        static ulong input_length = 10000000;
+        static int runs = 10;
+        static ulong input_length = 1000000;
         static string input;
 
         delegate byte[] FunctionPtr(String input);
@@ -63,7 +63,7 @@ namespace InvesBanEvades {
             Console.WriteLine("Testing Performance of V17");
             results.Add(("V17", TestPerformance(HexStringToByteArrayV17)));
             Console.WriteLine("Testing Performance of V18");
-            //results.Add(("V18", TestPerformance(HexStringToByteArrayV18)));
+            results.Add(("V18", TestPerformance(HexStringToByteArrayV18)));
             Console.WriteLine("Testing Performance of V19");
             results.Add(("V19", TestPerformance(HexStringToByteArrayV19)));
             Console.WriteLine("Testing Performance of V20");
